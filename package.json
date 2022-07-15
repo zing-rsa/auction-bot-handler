@@ -1,0 +1,23 @@
+{
+  "name": "auction-bot-handle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zing-rsa/auction-bot-handler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zing-rsa/auction-bot-handler/issues"
+  },
+  "homepage": "https://github.com/zing-rsa/auction-bot-handler#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1"
+  }
+}
