@@ -4,20 +4,53 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { DISC_GUILD_ID, DISC_CLIENT_ID, DISC_TOKEN } = require('./config.js');
 
-const commands = [];
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const mongo = require('./mongo');
+const { BOT_COL_NAME } = require('./config');
 
-for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-	commands.push(command.data.toJSON());
-}
+(async () => {
 
-const rest = new REST({ version: '9' }).setToken(DISC_TOKEN);
+	try {
+		await mongo.connect();
+	} catch (error) {
+		process.exit() //for now
+	}
 
-rest.put(Routes.applicationGuildCommands(DISC_CLIENT_ID, DISC_GUILD_ID), { body: commands })
-	.then(() => console.log('Successfully registered application commands.'))
-	.catch(console.error);
+	const db = mongo.db();
+
+	let bots = db.collection(BOT_COL_NAME);
+	let botsArr = await bots.find({}).toArray();
+
+	console.log(botsArr);
+
+	for (let i = 0; i < botsArr.length; i++) {
+
+		const commands = [];
+		const commandsPath = path.join(__dirname, 'slash-commands');
+		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+		for (const file of commandFiles) {
+			const filePath = path.join(commandsPath, file);
+			const command = require(filePath);
+			commands.push(command.data.toJSON());
+		}
+
+		const rest = new REST({ version: '9' }).setToken(botsArr[i].token);
+
+		try {
+			await rest.put(Routes.applicationGuildCommands(botsArr[i]._id, botsArr[i].guild), { body: commands })
+			console.log('Successfully registered application commands for client: ', botsArr[i]._id)
+		} catch (e){
+			console.log(e);
+		}
+
+	}
+
+	process.exit();
+
+})();
+
+
+
+
+

@@ -3,34 +3,62 @@ require('dotenv').config()
 const fs = require('node:fs');
 const path = require('node:path');
 
+const mongo = require('./mongo');
+
 const { Client, Intents, Collection } = require('discord.js');
-const { DISC_TOKEN } = require('./config.js');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const { BOT_COL_NAME } = require('./config');
 
-client.commands = new Collection();
+let clients = {};
 
-const commandsPath = path.join(__dirname, 'slash-commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+(async () => {
 
-for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-	client.commands.set(command.data.name, command);
-}
-
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-
-for (const file of eventFiles) {
-	const filePath = path.join(eventsPath, file);
-	const event = require(filePath);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
+	try {
+		await mongo.connect();
+	} catch (error) {
+		process.exit() //for now
 	}
-}
 
-client.login(DISC_TOKEN);
+	const db = mongo.db();
+
+	let bots = db.collection(BOT_COL_NAME);
+	let botsArr = await bots.find({}).toArray();
+
+	console.log(botsArr);
+
+	for (let i = 0; i < botsArr.length; i++) {
+
+		clients[botsArr[i]._id] = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+
+		clients[botsArr[i]._id].commands = new Collection();
+
+		const commandsPath = path.join(__dirname, 'slash-commands');
+		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+		for (const file of commandFiles) {
+			const filePath = path.join(commandsPath, file);
+			const command = require(filePath);
+			clients[botsArr[i]._id].commands.set(command.data.name, command);
+		}
+
+		const eventsPath = path.join(__dirname, 'events');
+		const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+		for (const file of eventFiles) {
+			const filePath = path.join(eventsPath, file);
+			const event = require(filePath);
+			if (event.once) {
+				clients[botsArr[i]._id].once(event.name, (...args) => event.execute(...args));
+			} else {
+				clients[botsArr[i]._id].on(event.name, (...args) => event.execute(...args));
+			}
+		}
+
+		console.log('Logging in client: ', botsArr[i]._id);
+
+		clients[botsArr[i]._id].login(botsArr[i].token);
+
+	}
+
+})();
 
