@@ -30,4 +30,14 @@ mvp:
 2. run two bots at same time with simple commands - DONE
 3. add complex commands
 4. run two bots with complex commands
+
+Required perms:
+
+- manage roles
+- manage channels
+- send embeds
+- read message history
+- read messages
+- send messages
+
   

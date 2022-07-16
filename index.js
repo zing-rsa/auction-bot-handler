@@ -7,7 +7,7 @@ const mongo = require('./mongo');
 
 const { Client, Intents, Collection } = require('discord.js');
 
-const { BOT_COL_NAME } = require('./config');
+const { BOT_COL_NAME, AUCTION_COL_NAME } = require('./config');
 
 let clients = {};
 
@@ -22,7 +22,10 @@ let clients = {};
 	const db = mongo.db();
 
 	let bots = db.collection(BOT_COL_NAME);
+	let auctions = db.collection(AUCTION_COL_NAME);
+
 	let botsArr = await bots.find({}).toArray();
+	let auctionsArr = await auctions.find({}).toArray();
 
 	console.log(botsArr);
 
@@ -31,10 +34,19 @@ let clients = {};
 		clients[botsArr[i]._id] = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 		clients[botsArr[i]._id].config = {
-			auction_cat : botsArr[i].auction_cat,
-			tx_channel : botsArr[i].tx_channel,
-			comm_channel : botsArr[i].comm_channel
-		}
+			auction_cat: botsArr[i].auction_cat,
+			tx_channel: botsArr[i].tx_channel,
+			comm_channel: botsArr[i].comm_channel
+		};
+
+		clients[botsArr[i]._id].auctions = auctionsArr
+			.filter((auction) => {auction.client_owner == botsArr[i]._id;});
+
+		clients[botsArr[i]._id].auctionIds = auctionsArr
+			.filter((auction) => auction.client_owner == botsArr[i]._id)
+			.map((auction) => auction._id);
+
+		console.log('auctions: ', clients[botsArr[i]._id].auctionIds);
 
 		clients[botsArr[i]._id].commands = new Collection();
 
@@ -58,7 +70,7 @@ let clients = {};
 			} else {
 				clients[botsArr[i]._id].on(event.name, (...args) => event.execute(...args));
 			}
-		}	
+		}
 
 		console.log('Logging in client: ', botsArr[i]._id);
 
