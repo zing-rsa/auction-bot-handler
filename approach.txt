@@ -1,0 +1,24 @@
+- multiple bots managed by a single server
+- need to store multiple sets of credentials, one for each bots
+  - each bot is specific to one guild
+    - guild
+    - client_id
+    - token
+
+- need to store all auctions 
+  - client_id
+  - owner(bot)
+  - all other details
+
+- on startup
+  - connect to db
+  - pull bots
+  - for each bot
+    - create client, store this object somewhere 
+    - link up events
+    - link up commands
+  - pull auctions
+    - check for earliest start date
+    - set event timer for that
+  - 
+  

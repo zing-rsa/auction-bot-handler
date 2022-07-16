@@ -1,0 +1,4 @@
+- check how normal commands work
+- setup local mongo
+- create second bot app
+- store creds in db and try run both at same time.
