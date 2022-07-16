@@ -1,0 +1,23 @@
+const { MESSAGE_COMMAND_PREFIX } = require('../config')
+
+module.exports = {
+	name: 'messageCreate',
+	async execute(ctx) {
+        if (ctx.author.bot) return
+        if (!ctx.content.startsWith(MESSAGE_COMMAND_PREFIX)) return
+
+        const args = ctx.content.slice(config.prefix.length).trim().split(/ +/)
+        const command = args.shift().toLowerCase()
+
+        const cmd = ctx.client.commands.get(command) 
+    
+        if (!cmd) return;
+    
+        try {
+            await cmd.execute(ctx);
+        } catch (error) {
+            console.error(error);
+            await ctx.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+        }
+	},
+};

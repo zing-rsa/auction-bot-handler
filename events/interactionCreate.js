@@ -1,17 +1,17 @@
 module.exports = {
 	name: 'interactionCreate',
-	async execute(interaction) {
-        if (!interaction.isCommand()) return;
+	async execute(ctx) {
+        if (!ctx.isCommand()) return;
 
-        const command = interaction.client.commands.get(interaction.commandName);
+        const command = ctx.client.commands.get(ctx.commandName);
     
         if (!command) return;
     
         try {
-            await command.execute(interaction);
+            await command.execute(ctx);
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+            await ctx.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
 	},
 };
