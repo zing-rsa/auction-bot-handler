@@ -26,8 +26,8 @@ mvp:
 - can run all commands as previous bot?
 - can run two bots? 
 
-1. build one bot that is fetches it's config from a reproducable source(mongo)
-2. run two bots at same time with simple commands
+1. build one bot that is fetches it's config from a reproducable source(mongo) - DONE
+2. run two bots at same time with simple commands - DONE
 3. add complex commands
 4. run two bots with complex commands
   

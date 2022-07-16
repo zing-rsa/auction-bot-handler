@@ -30,6 +30,12 @@ let clients = {};
 
 		clients[botsArr[i]._id] = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
+		clients[botsArr[i]._id].config = {
+			auction_cat : botsArr[i].auction_cat,
+			tx_channel : botsArr[i].tx_channel,
+			comm_channel : botsArr[i].comm_channel
+		}
+
 		clients[botsArr[i]._id].commands = new Collection();
 
 		const commandsPath = path.join(__dirname, 'slash-commands');
@@ -52,7 +58,7 @@ let clients = {};
 			} else {
 				clients[botsArr[i]._id].on(event.name, (...args) => event.execute(...args));
 			}
-		}
+		}	
 
 		console.log('Logging in client: ', botsArr[i]._id);
 
