@@ -10,7 +10,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 
 client.commands = new Collection();
 
-const commandsPath = path.join(__dirname, 'commands');
+const commandsPath = path.join(__dirname, 'slash-commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
