@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { handle_timer_setup } = require('../timers');
 const { AUCTION_COL_NAME } = require('../config');
 const db = require('../mongo').db();
 
@@ -36,6 +37,10 @@ module.exports = {
 						ephemeral: true
 					});
 			}
+
+			//TODO: check start and end are in future
+
+			//TODO:  check end is after start 
 
 			auc_name = interaction.options.getString('name');
 
@@ -75,16 +80,27 @@ module.exports = {
 
 			await db.collection(AUCTION_COL_NAME).insertOne(auction);
 
-			interaction.client.auctions.push(auction)
-			interaction.client.auctionIds.push(auction)
+			interaction.client.auctions.push(auction);
+			interaction.client.auctionIds.push(auction._id);
 
 			await auction_channel.send(`Welcome to the new auction for ${auc_name}!`);
 
 			console.log('created auction for', auc_name);
 
+			handle_timer_setup(auction, interaction.client);
+
 			return await interaction.reply('Auction created');
 
 		} catch (e) {
+
+			// try remove auction traces
+			// client object, db, timers, etc
+			// try {
+
+			// } catch (e) {
+
+			// }
+
 			console.error(e);
 			return await interaction.reply('Failed to execute this command');
 		}

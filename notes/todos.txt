@@ -2,3 +2,46 @@
 - setup local mongo
 - create second bot app
 - store creds in db and try run both at same time.
+
+
+TODO: 
+
+- Handle missing permissions elegantly
+
+- Setup walkthrough process
+
+- /bid
+
+- /price
+
+- embeds 
+
+- image-url
+
+- remove ping
+
+
+Testing:
+
+- create auction 
+  - auction should open and close at correct time
+
+- create auction and restart bot
+  - auction should open and close at correct time
+
+- delete channel of auction before start
+    - should cancel auction silently
+
+- delete channel of auction before end
+    - should cancel auction silently
+
+- delete auction channel after completing
+
+- test multiple auctions concurrently in one server
+
+- test multiple auctions concurrently in multiple servers
+
+- auction starts and ends correctly after bot restart
+
+- auction ends correctly after bot restart *during auction*
+

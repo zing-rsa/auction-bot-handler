@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { handle_auction_end } = require('../handlers');
+const { clear_timers } = require('../timers');
 const { AUCTION_COL_NAME } = require('../config');
 const db = require('../mongo').db();
 
@@ -23,6 +24,8 @@ module.exports = {
 
             if (!auction)
                 return await interaction.reply({ content: "Can't find that auction", ephemeral: true });
+
+            clear_timers(auction._id);
 
             handle_auction_end(auction, interaction);
 

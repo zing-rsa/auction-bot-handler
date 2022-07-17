@@ -19,7 +19,7 @@ let clients = {};
 
 	const db = mongo.db();
 
-	const { handle_auction_start } = require('./handlers');
+	const { handle_timer_setup } = require('./timers');
 
 	let bots = db.collection(BOT_COL_NAME);
 	let auctions = db.collection(AUCTION_COL_NAME);
@@ -27,7 +27,7 @@ let clients = {};
 	let botsArr = await bots.find({}).toArray();
 	let auctionsArr = await auctions.find({}).toArray();
 
-	console.log(botsArr);
+	console.log('Found bots:', botsArr);
 
 	for (let i = 0; i < botsArr.length; i++) {
 
@@ -44,7 +44,7 @@ let clients = {};
 		clients[botsArr[i]._id].auctionIds = auctionsArr.filter((auction) => auction.client_owner == botsArr[i]._id)
 			.map((auction) => auction._id);
 
-		console.log('auctions: ', clients[botsArr[i]._id].auctionIds);
+		console.log(`Found auctions for ${botsArr[i]._id}:`, clients[botsArr[i]._id].auctionIds);
 
 		clients[botsArr[i]._id].commands = new Collection();
 
@@ -71,15 +71,7 @@ let clients = {};
 		}
 
 		for (let j = 0; j < clients[botsArr[i]._id].auctions.length; j++) {
-
-			const start_diff = clients[botsArr[i]._id].auctions[j].start - new Date();
-			//add end diff
-
-			//need to make sure that start and end are in future
-			
-			// setTimeout(() => handle_auction_start(clients[botsArr[i]._id].auctions[j], clients[botsArr[i]._id]), diff);
-			setTimeout(() => handle_auction_start(clients[botsArr[i]._id].auctions[j], clients[botsArr[i]._id]), 5000); //hardcode for dev
-
+			handle_timer_setup(clients[botsArr[i]._id].auctions[j], clients[botsArr[i]._id]);
 		}
 
 		console.log('Logging in client: ', botsArr[i]._id);

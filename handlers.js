@@ -1,36 +1,45 @@
 const { AUCTION_COL_NAME } = require('./config');
 const db = require('./mongo').db();
 
-
 const handle_auction_start = async (auction, client) => {
-	console.log('auction-' + auction.name + ' started')
+    console.log('auction-' + auction.name + ' started')
 
-	await db.collection(AUCTION_COL_NAME).updateOne(
-        { _id: auction._id}, 
-        { '$set': {
-            'active': true
-        }
-    });
+    await db.collection(AUCTION_COL_NAME).updateOne(
+        { _id: auction._id },
+        {
+            '$set': {
+                'active': true
+            }
+        });
 
-	await client.guilds.cache.get(auction.guild)
-        .channels.cache.get(auction._id)
-        .send("This auction has started. Good luck!")
+    channel = client.guilds.cache.get(auction.guild).channels.cache.get(auction._id);
+
+    if(!channel) {
+        handle_auction_end(auction, client, silent=true);
+    } else {
+        await channel.send("This auction has started. Good luck!");
+    }
 }
 
-const handle_auction_end = async (auction, interaction) => {
+const handle_auction_end = async (auction, client, silent=false) => {
 
-    //this needs to be edited to accept (auction, client)
+    if (client.auctions.findIndex(a => a._id == auction._id) > -1)
+        client.auctions.splice(client.auctions.findIndex(a => a._id == auction._id), 1);
 
-    interaction.client.auctions.splice(interaction.client.auctions.findIndex(a => a._id == auction._id), 1);
-    interaction.client.auctionIds.splice(interaction.client.auctionIds.indexOf(auction._id));
-
-    await interaction.guild.channels.cache.get(interaction.client.config.tx_channel)
-        .send(`Closed auction: ${auction.name}`);
+    if (client.auctionIds.indexOf(auction._id) > -1)
+        client.auctionIds.splice(client.auctionIds.indexOf(auction._id));
 
     await db.collection(AUCTION_COL_NAME).deleteOne({ _id: auction._id });
 
-    await interaction.guild.channels.cache.get(auction._id)
-        .send('This auction has ended. Thank you!');
+    if (!silent) {
+        await client.guilds.cache.get(auction.guild)
+            .channels.cache.get(auction._id)
+            .send('This auction has ended. Thank you!');
+
+        await client.guilds.cache.get(auction.guild)
+            .channels.cache.get(client.config.tx_channel)
+            .send(`Closed auction: ${auction.name}`);
+    }
 }
 
 module.exports = {
