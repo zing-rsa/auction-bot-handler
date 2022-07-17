@@ -3,6 +3,7 @@ Create bot on portal
 Save details(guild, channel, auction cat, token) to mongo bots db
 
 Generate disc link with perms in v1_perms.png
+ - v1 - (<url>&permissions=268528656&scope=applications.commands%20bot)
 
 Send link to person
 
