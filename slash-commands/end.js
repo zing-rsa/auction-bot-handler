@@ -1,19 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { handle_auction_end } = require('../handlers');
 const { AUCTION_COL_NAME } = require('../config');
 const db = require('../mongo').db();
-
-const handle_auction_end = async (auction, interaction) => {
-    interaction.client.auctions.splice(interaction.client.auctions.findIndex(a => a._id == auction._id), 1);
-    interaction.client.auctionIds.splice(interaction.client.auctionIds.indexOf(auction._id));
-
-    await interaction.guild.channels.cache.get(interaction.client.config.tx_channel)
-        .send(`Closed auction: ${auction.name}`);
-
-    await db.collection(AUCTION_COL_NAME).deleteOne({ _id: auction._id });
-
-    await interaction.guild.channels.cache.get(auction._id)
-        .send('This auction has ended. Thank you!');
-}
 
 module.exports = {
     data: new SlashCommandBuilder()

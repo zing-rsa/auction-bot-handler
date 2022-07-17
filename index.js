@@ -1,13 +1,11 @@
 require('dotenv').config()
-
-const fs = require('node:fs');
-const path = require('node:path');
-
-const mongo = require('./mongo');
+const { BOT_COL_NAME, AUCTION_COL_NAME } = require('./config');
 
 const { Client, Intents, Collection } = require('discord.js');
+const path = require('node:path');
+const fs = require('node:fs');
 
-const { BOT_COL_NAME, AUCTION_COL_NAME } = require('./config');
+const mongo = require('./mongo');
 
 let clients = {};
 
@@ -20,6 +18,8 @@ let clients = {};
 	}
 
 	const db = mongo.db();
+
+	const { handle_auction_start } = require('./handlers');
 
 	let bots = db.collection(BOT_COL_NAME);
 	let auctions = db.collection(AUCTION_COL_NAME);
@@ -39,11 +39,9 @@ let clients = {};
 			comm_channel: botsArr[i].comm_channel
 		};
 
-		clients[botsArr[i]._id].auctions = auctionsArr
-			.filter((auction) => {auction.client_owner == botsArr[i]._id;});
+		clients[botsArr[i]._id].auctions = auctionsArr.filter((auction) => auction.client_owner == botsArr[i]._id);
 
-		clients[botsArr[i]._id].auctionIds = auctionsArr
-			.filter((auction) => auction.client_owner == botsArr[i]._id)
+		clients[botsArr[i]._id].auctionIds = auctionsArr.filter((auction) => auction.client_owner == botsArr[i]._id)
 			.map((auction) => auction._id);
 
 		console.log('auctions: ', clients[botsArr[i]._id].auctionIds);
@@ -70,6 +68,18 @@ let clients = {};
 			} else {
 				clients[botsArr[i]._id].on(event.name, (...args) => event.execute(...args));
 			}
+		}
+
+		for (let j = 0; j < clients[botsArr[i]._id].auctions.length; j++) {
+
+			const start_diff = clients[botsArr[i]._id].auctions[j].start - new Date();
+			//add end diff
+
+			//need to make sure that start and end are in future
+			
+			// setTimeout(() => handle_auction_start(clients[botsArr[i]._id].auctions[j], clients[botsArr[i]._id]), diff);
+			setTimeout(() => handle_auction_start(clients[botsArr[i]._id].auctions[j], clients[botsArr[i]._id]), 5000); //hardcode for dev
+
 		}
 
 		console.log('Logging in client: ', botsArr[i]._id);

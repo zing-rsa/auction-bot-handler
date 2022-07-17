@@ -23,17 +23,27 @@ module.exports = {
 	async execute(interaction) {
 		try {
 			console.log('create');
-	
+
 			if (interaction.channelId != interaction.client.config.comm_channel)
 				return await interaction.reply({ content: "Can't do that here", ephemeral: true });
 
+			const re = /\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}/
+			if ([interaction.options.get('start-time').value, interaction.options.get('end-time').value]
+				.map(str => re.test(str)).includes(false)) {
+				return await interaction.reply(
+					{
+						content: "Those dates don't look right. Please send them in the following format: yyyy-MM-dd HH:mm:ss",
+						ephemeral: true
+					});
+			}
+
 			auc_name = interaction.options.getString('name');
-	
+
 			existing_channel = interaction.guild.channels.cache.find(channel => channel.name == auc_name);
-	
+
 			if (existing_channel)
 				return await interaction.reply({ content: "Channel already exists", ephemeral: true });
-	
+
 			auction_cat = interaction.guild.channels.cache.get(interaction.client.config.auction_cat);
 
 			if (!auction_cat)
@@ -50,16 +60,17 @@ module.exports = {
 			auction = {
 				'_id': auction_channel.id,
 				'name': auc_name,
-                'price': interaction.options.get('price').value,
-                'increment': interaction.options.get('increment').value,
-                'start': Date.parse(interaction.options.get('start').value),
-                'end': Date.parse(interaction.options.get('end').value),
-                'highBid': interaction.options.get('price').value,
-                'highBidId': null,
-                'highBidName': null,
-                'active': false,
-                'bids': 0,
-				'client_owner': interaction.client.application.id
+				'price': interaction.options.get('price').value,
+				'increment': interaction.options.get('increment').value,
+				'start': Date.parse(interaction.options.get('start-time').value + ' UTC'),
+				'end': Date.parse(interaction.options.get('end-time').value + ' UTC'),
+				'highBid': interaction.options.get('price').value,
+				'highBidId': null,
+				'highBidName': null,
+				'active': false,
+				'bids': 0,
+				'client_owner': interaction.client.application.id,
+				'guild': interaction.guildId
 			}
 
 			await db.collection(AUCTION_COL_NAME).insertOne(auction);
@@ -68,9 +79,9 @@ module.exports = {
 			interaction.client.auctionIds.push(auction)
 
 			await auction_channel.send(`Welcome to the new auction for ${auc_name}!`);
-	
+
 			console.log('created auction for', auc_name);
-	
+
 			return await interaction.reply('Auction created');
 
 		} catch (e) {
