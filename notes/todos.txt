@@ -6,10 +6,11 @@
 
 TODO: 
 
-- Handle missing permissions elegantly
+- Handle missing permissions elegantly?
+ - if bot can't access the channels it needs to, what happens? 
+    - does entire server crash? ie. require restart ?
+    - does it just fail and carry on?
 
-- Setup walkthrough process
-  - keep in mind that deploy-commands needs to be run
 
 DONE - /bid
 
@@ -33,6 +34,8 @@ DONE - remove ping
 
 - dont' ship with hardcoded times
 
+- Setup walkthrough process
+  - keep in mind that deploy-commands needs to be run
 
 
 Testing:
