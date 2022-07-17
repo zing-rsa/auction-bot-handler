@@ -9,6 +9,7 @@ TODO:
 - Handle missing permissions elegantly
 
 - Setup walkthrough process
+  - keep in mind that deploy-commands needs to be run
 
 - /bid
 
@@ -19,6 +20,8 @@ TODO:
 - image-url
 
 - remove ping
+
+- listen for old !bid and !create
 
 
 Testing:

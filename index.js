@@ -16,10 +16,11 @@ let clients = {};
 	} catch (error) {
 		process.exit() //for now
 	}
-
+	
 	const db = mongo.db();
-
+	
 	const { handle_timer_setup } = require('./timers');
+
 
 	let bots = db.collection(BOT_COL_NAME);
 	let auctions = db.collection(AUCTION_COL_NAME);

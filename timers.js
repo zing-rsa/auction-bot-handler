@@ -5,11 +5,8 @@ let end_timers = {}
 
 const handle_timer_setup = (auction, client) => {
 
-    // const start_diff = auction.start - new Date();
-    // const end_diff = auction.end - new Date();
-    
-    const start_diff = 10000; //dev
-    const end_diff = 20000;   //dev
+    const start_diff = auction.start - Date.now();
+    const end_diff = auction.end - Date.now();
 
     //check if auctions are soon
 
