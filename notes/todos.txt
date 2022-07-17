@@ -25,7 +25,6 @@ DONE - remove ping
 
 - deploy and test on server
 
-
 - listen for old !bid and !create
 
 - don't send fucked dates
@@ -42,6 +41,7 @@ Testing:
  - seems WORKING
 
 - test multiple auctions concurrently in multiple servers
+  - seems WORKING
 
 - /end none existing auction
  - WORKING
