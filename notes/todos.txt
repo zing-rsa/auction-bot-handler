@@ -11,40 +11,72 @@ TODO:
 - Setup walkthrough process
   - keep in mind that deploy-commands needs to be run
 
-- /bid
+DONE - /bid
 
-- /price
+DONE - /price
 
-- embeds 
+DNE - bid extend function
 
-- image-url
+DONE - embeds 
 
-- remove ping
+DONE - image-url
+
+DONE - remove ping
+
+- deploy and test on server
+
 
 - listen for old !bid and !create
+
+- don't send fucked dates
+
+- email noties when it goes down?
+
 
 
 Testing:
 
-- create auction 
-  - auction should open and close at correct time
-
-- create auction and restart bot
-  - auction should open and close at correct time
-
-- delete channel of auction before start
-    - should cancel auction silently
-
-- delete channel of auction before end
-    - should cancel auction silently
-
-- delete auction channel after completing
-
 - test multiple auctions concurrently in one server
+ - seems WORKING
 
 - test multiple auctions concurrently in multiple servers
 
+- /end none existing auction
+ - WORKING
+
+- /end before start
+ - WORKING
+
+- /end auction prematurely
+ - WORKING
+
+- create auction and restart bot
+  - auction should open and close at correct time
+  - WORKING
+
+- delete channel of auction before start
+    - should cancel auction silently
+    - WORKING
+
+- delete channel of auction before end
+    - should cancel auction silently  
+    - WORKING
+
 - auction starts and ends correctly after bot restart
+ - WORKING
+
+- create auction 
+  - auction should open and close at correct time
+  - WORKING
+
+- delete auction channel after completing
+  - WORKING
 
 - auction ends correctly after bot restart *during auction*
+  - WORKING
+  - still place bids etc.
+    - WORKING
+
+- /price, /bid, /create, /end in other channels
+  - WORKING
 

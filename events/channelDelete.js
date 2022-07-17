@@ -9,7 +9,7 @@ module.exports = {
 
         console.log('Detected deleted channel: ', channel.id);
 
-        auction = channel.client.auctions.filter(auc => auc._id == channel.id);
+        auction = channel.client.auctions.find(auc => auc._id == channel.id);
 
         clear_timers(channel.id);
 
