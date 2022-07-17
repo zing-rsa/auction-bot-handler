@@ -1,0 +1,18 @@
+Create bot on portal
+
+Save details(guild, channel, auction cat, token) to mongo bots db
+
+Generate disc link with perms in v1_perms.png
+
+Send link to person
+
+Once they invite, run node deploy-commands.js(registers the bot for use in that server)
+
+Make sure bot can access all necessary channels.
+
+Should be good to go. 
+
+
+
+
+

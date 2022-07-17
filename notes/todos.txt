@@ -32,6 +32,8 @@ DONE - remove ping
 
 - email noties when it goes down?
 
+- dont' ship with hardcoded times
+
 
 
 Testing:
