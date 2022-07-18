@@ -40,7 +40,7 @@ module.exports = {
 			console.log('/bid')
 
 			extended = false;
-			// prevHighBidId = auction.highBidId
+			prevHighBidId = auction.highBidId
 
 			auction_update = {
 				...auction,
@@ -80,6 +80,9 @@ module.exports = {
 				.setTimestamp();
 
 			await interaction.reply({ embeds: [bidEmbed] });
+
+			if(prevHighBidId && prevHighBidId != 'none')
+				await interaction.channel.send(`<@${prevHighBidId}> you have been outbid!`);
 
 			if (extended)
 				await interaction.channel.send(`Auction extended! New end time: ${toCustomStringDate(new Date(auction_update.end))} (UTC)`)

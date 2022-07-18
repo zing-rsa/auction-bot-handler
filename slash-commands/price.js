@@ -23,11 +23,12 @@ module.exports = {
 				}
 				console.log('/price')
 				
-				price = interaction.client.auctions.find(auc => auc._id = interaction.channelId).highBid;
+				let { highBid, increment } = interaction.client.auctions.find(auc => auc._id = interaction.channelId);
 
 				const priceEmbed = new MessageEmbed()
 				.setColor('0x00a113')
-				.setTitle(`The current price is: ${price}ADA`)
+				.setTitle(`The current highest bid is: ${highBid}ADA`)
+				.setDescription(`Next bid is: ${highBid + increment}ADA`)
 				.setTimestamp();
 
 			await interaction.reply({ embeds: [priceEmbed] });
