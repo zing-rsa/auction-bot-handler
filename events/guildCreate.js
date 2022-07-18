@@ -57,11 +57,42 @@ started with /create. If you have any questions, please message my dad - zing#09
             await dmChannel.send(`Thank you for adding me to ${guild.name}!`);
 
             for (let index = 0; index < 4; index++) {
+
+                step_complete = false
+                retries_left = 5
+                
                 await dmChannel.send(guideText[i]);
 
-                message = (await dmChannel.awaitMessages({ max: 1 })).first();
+                while (!step_complete) {
+                    
+                    if (retries_left == 0){
+                        throw new Error('Could not complete setup: Max retires reached');
+                    }
 
-                details[i] = message.content;
+                    try {
+
+
+                        message = (await dmChannel.awaitMessages({ max: 1 })).first();
+
+                        channelId = message.content;
+
+                        channel = guild.
+
+
+
+                        details[i] = channelId;
+
+                        step_complete = true
+
+
+                    } catch (e) {
+
+                        retries_left -= 1;
+                        await dmChannel.send(`I couldn't find that. Please make sure the ID is correct, and I have the permission to access it, and try again`);
+
+                    }
+
+                }
             }
 
             bot_update = {
