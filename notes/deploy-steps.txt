@@ -1,6 +1,16 @@
 Create bot on portal
 
 Save details(guild, channel, auction cat, token) to mongo bots db
+ - if automated should:
+    - require token, guild, _id props
+    - fetch bot from db based on client._id
+    - check correct guild
+
+    - if auction_cat doesn't exist, ask for auction_cat
+    - if comm_channel doesn't exist, ask for comm_channel
+    - if tx_channel doesn't exist, ask for tx_channel
+
+    - register commands for guild
 
 Generate disc link with perms in v1_perms.png
  - v1 - (<url>&permissions=268528656&scope=applications.commands%20bot)
