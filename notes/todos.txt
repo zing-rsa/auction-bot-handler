@@ -40,8 +40,11 @@ DONE - remove ping
 
 Testing:
 
+
 - does a user setting up a bot block other auctions? 
 
+
+- test how long you can wait before sending the channel ID's
 
 
 - test multiple auctions concurrently in one server

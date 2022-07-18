@@ -1,6 +1,7 @@
 require('dotenv').config()
 const { BOT_COL_NAME, AUCTION_COL_NAME } = require('./config');
 
+
 const { Client, Intents, Collection } = require('discord.js');
 const path = require('node:path');
 const fs = require('node:fs');
