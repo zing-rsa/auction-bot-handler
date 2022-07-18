@@ -15,10 +15,13 @@ Existing
 
 New -
 
-- create db onject with id, guild, token
+- create db object with id, guild, token
 - restart node worker
 - ask him to add bot with link
   - this should force setup
+
+Latest url perms: 
+v1: &permissions=268528784&scope=bot%20applications.commands
 
 
 
