@@ -175,7 +175,7 @@ Please try again.`          )
 
             await db.collection(BOT_COL_NAME).updateOne({ _id: clientId }, { '$set': bot_update });
 
-            console.log(`Updated db entry for bot: `)
+            console.log(`Updated db entry for bot:`, clientId)
 
         } catch (e) {
             console.error('Setup process failed: ', e);
