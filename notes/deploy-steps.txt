@@ -1,27 +1,24 @@
 Create bot on portal
 
-Save details(guild, channel, auction cat, token) to mongo bots db
- - if automated should:
-    - require token, guild, _id props
-    - fetch bot from db based on client._id
-    - check correct guild
+Existing
 
-    - if auction_cat doesn't exist, ask for auction_cat
-    - if comm_channel doesn't exist, ask for comm_channel
-    - if tx_channel doesn't exist, ask for tx_channel
+- create DB objects, with token, guild, all channels SETUP_COMPLETE=true
 
-    - if all 3 of the above are good to go, register commands for guild
+- kill the old py worker
 
-Generate disc link with perms in v1_perms.png
- - v1 - (<url>&permissions=268528656&scope=applications.commands%20bot)
+- start the new node worker
+  - the two servers with existing bots should just start seemlessly
 
-Send link to person
+- ask them to re add the bot - this is just to accept new perms and register commands
 
-Once they invite, run node deploy-commands.js(registers the bot for use in that server)
+- ask them to give the bot access to the channels and categories it needs again
 
-Make sure bot can access all necessary channels.
+New -
 
-Should be good to go. 
+- create db onject with id, guild, token
+- restart node worker
+- ask him to add bot with link
+  - this should force setup
 
 
 
