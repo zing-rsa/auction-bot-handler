@@ -7,9 +7,9 @@
 TODO: 
 
 - Handle missing permissions elegantly?
- - if bot can't access the channels it needs to, what happens? 
+ - if bot can't access the channels it needs to, what happens ? 
     - does entire server crash? ie. require restart ?
-    - does it just fail and carry on?
+    - does it just fail and carry on ?
 
 
 DONE - /bid
@@ -39,6 +39,10 @@ DONE - remove ping
 
 
 Testing:
+
+- does a user setting up a bot block other auctions? 
+
+
 
 - test multiple auctions concurrently in one server
  - seems WORKING

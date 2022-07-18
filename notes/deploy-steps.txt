@@ -10,7 +10,7 @@ Save details(guild, channel, auction cat, token) to mongo bots db
     - if comm_channel doesn't exist, ask for comm_channel
     - if tx_channel doesn't exist, ask for tx_channel
 
-    - register commands for guild
+    - if all 3 of the above are good to go, register commands for guild
 
 Generate disc link with perms in v1_perms.png
  - v1 - (<url>&permissions=268528656&scope=applications.commands%20bot)

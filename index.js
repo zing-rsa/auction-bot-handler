@@ -32,9 +32,11 @@ let clients = {};
 
 	for (let i = 0; i < botsArr.length; i++) {
 
-		clients[botsArr[i]._id] = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+		clients[botsArr[i]._id] = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES ] });
 
 		clients[botsArr[i]._id].config = {
+			// need to check that these exist for the case where the bot is a new one
+			// it will only have guild, token, _id
 			auction_cat: botsArr[i].auction_cat,
 			tx_channel: botsArr[i].tx_channel,
 			comm_channel: botsArr[i].comm_channel
