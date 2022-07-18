@@ -38,12 +38,11 @@ const { BOT_COL_NAME } = require('./config');
 		const rest = new REST({ version: '9' }).setToken(botsArr[i].token);
 
 		try {
-			await rest.put(Routes.applicationGuildCommands(botsArr[i]._id, botsArr[i].guild), { body: commands })
-			console.log('Successfully registered application commands for client: ', botsArr[i]._id)
+			await rest.put(Routes.applicationGuildCommands(botsArr[i]._id, botsArr[i].guild), { body: commands });
+			console.log('Successfully registered application commands for client: ', botsArr[i]._id);
 		} catch (e){
 			console.log(e);
 		}
-
 	}
 
 	process.exit();

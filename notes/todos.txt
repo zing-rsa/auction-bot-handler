@@ -40,6 +40,18 @@ DONE - remove ping
 
 Testing:
 
+suspiscion:
+
+- if one thing is awaiting, when another occurs in the background, 
+- it means that the vars like client/interaction get overwritten, 
+- once the await resolves, the vars are now different
+-- 
+
+
+- start setup in one channel, breakpoint after awaitMessage
+
+- start auction in another channel, continue setup, check breakpoint vars
+
 
 - does a user setting up a bot block other auctions? 
 
