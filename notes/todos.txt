@@ -24,18 +24,19 @@ DONE - image-url
 
 DONE - remove ping
 
-- deploy and test on server
+DONE - deploy and test on server
 
 - listen for old !bid and !create
 
 - don't send fucked dates
 
 - email noties when it goes down?
+ - or when auction ends
 
 - dont' ship with hardcoded times
 
-- Setup walkthrough process
-  - keep in mind that deploy-commands needs to be run
+DONE - Setup walkthrough process
+  DONE - keep in mind that deploy-commands needs to be run
 
 
 Testing:
@@ -45,18 +46,16 @@ suspiscion:
 - if one thing is awaiting, when another occurs in the background, 
 - it means that the vars like client/interaction get overwritten, 
 - once the await resolves, the vars are now different
--- 
-
-
 - start setup in one channel, breakpoint after awaitMessage
-
 - start auction in another channel, continue setup, check breakpoint vars
 
+-- NOT THE CASE
 
 - does a user setting up a bot block other auctions? 
-
+ - NOPE
 
 - test how long you can wait before sending the channel ID's
+ - ITS LONG
 
 
 - test multiple auctions concurrently in one server
