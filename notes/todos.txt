@@ -16,7 +16,7 @@ DONE - /bid
 
 DONE - /price
 
-DNE - bid extend function
+DONE - bid extend function
 
 DONE - embeds 
 

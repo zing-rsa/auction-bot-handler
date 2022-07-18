@@ -8,6 +8,27 @@ const { MessageEmbed } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 
+const refresh_bot_commands = async (bot) => {
+    const commands = [];
+    const commandsPath = path.join(__dirname, '..', 'slash-commands');
+    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+    for (const file of commandFiles) {
+        const filePath = path.join(commandsPath, file);
+        const command = require(filePath);
+        commands.push(command.data.toJSON());
+    }
+
+    const rest = new REST({ version: '9' }).setToken(bot.token);
+
+    try {
+        await rest.put(Routes.applicationGuildCommands(bot._id, bot.guild), { body: commands })
+        console.log(`Successfully registered application commands for client: ${bot._id} in server: ${bot.guild}`)
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 module.exports = {
     name: 'guildCreate',
     once: true,
@@ -26,6 +47,7 @@ module.exports = {
 
             if (bot_details.setup_complete == true) {
                 console.log(`Setup is already complete for bot ${clientId} on server ${guild.id} (${guild.name})`);
+                refresh_bot_commands(bot_details);
                 return
             }
 
@@ -37,22 +59,29 @@ module.exports = {
             ]
 
             let guideBody = [
-                `Lets get you setup. It'll take 3 steps.             
-To start off, please create me a new category in your server. This category will be 
-where all your auction channels are posted. It can be anywhere, and 
-you can name it anything you'd like, just please make sure that I have access to it. 
-Once you're done, please send the ID of the category to me here.`,
+                `Lets get you setup. It'll take 3 steps.\n
+To start off, please create me a new \`category\` in your server. This category will be 
+where all your auction channels are posted. It can be anywhere, and you can name it
+anything you'd like, but \`please make sure that I have access to it\`.\n 
+Once you're done, please [copy the ID](https://turbofuture.com/internet/Discord-Channel-ID) of the category and send it to me here.`,
 
-                `Next create a channel that you will use to run admin commands for auctions 
-(create, end, etc.). It's a good idea to make this private, but please make 
-sure I have access to it. Once you're ready, please send me the ID of the channel here.`,
+                `Next create a \`channel\` that you will use to run admin commands for auctions 
+(create, end, etc.). It's a good idea to make this private, but \`please make 
+sure I have access to it\`.\n
+Once you're ready, please send me the ID of the channel here.`,
 
-                `Last step is the history channel - create a channel and I'll log the info of your auctions as they end. 
+                `The final step is the history channel. Create a channel and I'll log the info of your auctions as they end. Last time - \`please give me access\`.\n
 Once you're done please send that ID here.`,
 
                 `You can now go to your auction commands channel and get 
 started with /create. If you have any questions, please message my dad - zing#0908`
             ];
+
+            let guideExpectedTypes = [
+                'GUILD_CATEGORY',
+                'GUILD_TEXT',
+                'GUILD_TEXT'
+            ]
 
             details = []
 
@@ -65,14 +94,12 @@ started with /create. If you have any questions, please message my dad - zing#09
                 retries_left = 5;
 
                 guideEmbed = new MessageEmbed()
-                    .setColor('0xfdbf2f')
+                    .setColor('0x00a113')
                     .setTitle(guideHeader[i])
                     .setDescription(guideBody[i])
                     .setTimestamp()
 
                 await dmChannel.send({ embeds: [guideEmbed] });
-
-                // await dmChannel.send(guideText[i]);
 
                 while (!step_complete) {
 
@@ -90,6 +117,10 @@ started with /create. If you have any questions, please message my dad - zing#09
 
                         channel = guild.channels.cache.get(channelId);
 
+                        if (channel.type != guideExpectedTypes[i]){
+                            throw new Error(`Didn't receive expected type`);
+                        }
+
                         if (channel.type == 'GUILD_TEXT') {
                             await channel.send("I'm here!");
                         } else if (channel.type == 'GUILD_CATEGORY') {
@@ -106,13 +137,23 @@ started with /create. If you have any questions, please message my dad - zing#09
 
                     } catch (e) {
                         retries_left--;
-                        await dmChannel.send(`I couldn't find that. Please make sure the ID is correct, and that I have the permission to access it, then send it again.`);
+                        guideEmbed = new MessageEmbed()
+                            .setColor('0xfdbf2f')
+                            .setTitle('Oops!')
+                            .setDescription(`I had trouble with that ID. Possible causes are: 
+- I don't have access to view the channel/category
+- It's not a valid ID
+- It's not what I'm expecting(eg. I asked for a category but you sent a channel or vice versa)\n
+Please try again.`          )
+                            .setTimestamp()
+
+                        await dmChannel.send({ embeds: [guideEmbed] });
                     }
                 }
             }
 
             guideEmbed = new MessageEmbed()
-                .setColor('0xfdbf2f')
+                .setColor('0x00a113')
                 .setTitle(guideHeader[3])
                 .setDescription(guideBody[3])
                 .setTimestamp()
@@ -126,32 +167,15 @@ started with /create. If you have any questions, please message my dad - zing#09
                 setup_complete: true
             }
 
-            await db.collection(BOT_COL_NAME).updateOne({ _id: clientId }, { '$set': bot_update });
+            refresh_bot_commands(bot_details);
 
-            // setup client.config like in index.js
             guild.client.config.auction_cat = bot_update.auction_cat
             guild.client.config.comm_channel = bot_update.comm_channel
             guild.client.config.tx_channel = bot_update.tx_channel
 
-            // run deploy commands script
-            const commands = [];
-            const commandsPath = path.join(__dirname, '..', 'slash-commands');
-            const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+            await db.collection(BOT_COL_NAME).updateOne({ _id: clientId }, { '$set': bot_update });
 
-            for (const file of commandFiles) {
-                const filePath = path.join(commandsPath, file);
-                const command = require(filePath);
-                commands.push(command.data.toJSON());
-            }
-
-            const rest = new REST({ version: '9' }).setToken(bot_details.token);
-
-            try {
-                await rest.put(Routes.applicationGuildCommands(bot_details._id, bot_details.guild), { body: commands })
-                console.log(`Successfully registered application commands for client: ${bot_details._id} in server: ${bot_details.guild}`)
-            } catch (e) {
-                console.log(e);
-            }
+            console.log(`Updated db entry for bot: `)
 
         } catch (e) {
             console.error('Setup process failed: ', e);
