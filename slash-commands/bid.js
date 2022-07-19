@@ -27,7 +27,7 @@ module.exports = {
 				if (!(auction.start <= now && auction.end >= now))
 					throw new ValidationError("Auction is not active");
 
-				if (price < auction.highBid + auction.increment || (auction.bids == 0 && price == auction.highBid))
+				if (price < auction.highBid || (auction.bids > 0 && price < auction.highBid + auction.increment))
 					throw new ValidationError(`Min bid is ${auction.highBid + auction.increment}`);
 
 			} catch (e) {
