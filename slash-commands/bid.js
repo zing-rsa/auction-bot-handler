@@ -27,8 +27,12 @@ module.exports = {
 				if (!(auction.start <= now && auction.end >= now))
 					throw new ValidationError("Auction is not active");
 
-				if (price < auction.highBid || (auction.bids > 0 && price < auction.highBid + auction.increment))
-					throw new ValidationError(`Min bid is ${auction.highBid + auction.increment}`);
+				if (price < auction.highBid || (auction.bids > 0 && price < auction.highBid + auction.increment)) {
+					if (auction.bids == 0)
+						throw new ValidationError(`Min bid is ${auction.highBid}`);
+					else
+						throw new ValidationError(`Min bid is ${auction.highBid + auction.increment}`);
+				}
 
 			} catch (e) {
 				if (e instanceof ValidationError)
@@ -81,7 +85,7 @@ module.exports = {
 
 			await interaction.reply({ embeds: [bidEmbed] });
 
-			if(prevHighBidId && prevHighBidId != 'none')
+			if (prevHighBidId && prevHighBidId != 'none')
 				await interaction.channel.send(`<@${prevHighBidId}> you have been outbid!`);
 
 			if (extended)
