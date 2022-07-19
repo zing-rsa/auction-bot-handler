@@ -70,7 +70,7 @@ Once you're done, please [copy the ID](https://turbofuture.com/internet/Discord-
 sure I have access to it\`.\n
 Once you're ready, please send me the ID of the channel here.`,
 
-                `The final step is the history channel. Create a channel and I'll log the info of your auctions as they end. Last time - \`please give me access\`.\n
+                `The final step is the history channel. Create a private channel and I'll log the info of your auctions as they end. One last time - \`please give me access\`.\n
 Once you're done please send that ID here.`,
 
                 `You can now go to your auction commands channel and get 
@@ -104,7 +104,7 @@ started with /create. If you have any questions, please message my dad - zing#09
                 while (!step_complete) {
 
                     if (retries_left == 0) {
-                        throw new Error('Could not complete setup: Max retires reached');
+                        throw new Error('Could not complete setup: Max retries reached');
                     }
 
                     try {
@@ -117,18 +117,49 @@ started with /create. If you have any questions, please message my dad - zing#09
 
                         channel = guild.channels.cache.get(channelId);
 
-                        if (channel.type != guideExpectedTypes[i]){
+                        if (channel.type != guideExpectedTypes[i]) {
                             throw new Error(`Didn't receive expected type`);
                         }
 
-                        if (channel.type == 'GUILD_TEXT') {
-                            await channel.send("I'm here!");
-                        } else if (channel.type == 'GUILD_CATEGORY') {
+                        if (i == 0) {
                             if (!channel) {
                                 throw new Error("Couldn't find category");
                             }
-                        } else {
-                            await channel.send("I'm here!");
+                        }
+
+                        if (i == 1) {
+                            commandChannelEmbed = new MessageEmbed()
+                                .setColor('0x00a113')
+                                .setTitle('Your auction commands channel:')
+                                .setDescription(`This will be where you manage your auctions.
+You are able to run two commands here:
+
+\`/create\`: will generate a new auction with supplied parameters. 
+Please note: dates should be in \`UTC\` and should be in format: \`yyyy-MM-dd HH:mm:ss\`. You have the option to include an image with the optional image-url tag, this should be a url to any publicly accessible image on the web.
+
+\`/end\`: will end an auction when supplied with the channelID of the auction. 
+Note that if you would like to cancel an auction before it has started, you can simply delete the channel - /end should only be required if you need to manually end an active auction before the specified end time, while preserving the bids. Once an auction ends I stop tracking the channel and it can be handled however you please.
+
+Note the above commands are scoped only to this channel and will be ignored if run anywhere else. Once an auction begins, your users will be able to interact within the auction channel by running two commands: 
+
+\`/bid\`: will allow them to bid a valid amount, while the auction is active. 
+
+\`/price\`: will display the current price(useful if a lengthy chat has ensued since the last bid).
+    
+That is all, happy auctioning!`)
+                                .setTimestamp()
+
+                            await channel.send({ embeds: [commandChannelEmbed] });
+                        }
+
+                        if (i == 2) {
+                            historyChannelEmbed = new MessageEmbed()
+                                .setColor('0x00a113')
+                                .setTitle('Your auction history channel:')
+                                .setDescription(`I will update this channel with auction details after they end.`)
+                                .setTimestamp()
+
+                            await channel.send({ embeds: [historyChannelEmbed] });
                         }
 
                         details[i] = channelId;
