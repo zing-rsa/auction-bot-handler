@@ -1,3 +1,29 @@
+wallet verify:
+ - verfiy.js 
+    - setInverval that runs for each key in 'verifying' map
+      - polls blockfrost with addy
+        - checks if any tx in the last 10 min == any key in verifying()
+    - add method adds to verifying list, and sets interval
+      - either on timeout or verification the interval is cleared
+
+ - slash-commands/verify.js
+   - random nu gen
+   - replies with amount and addy
+     - adds to verify.js 'verifying' map - key is amount
+     - creates timeout for 10 min to remove wallet from verifying 
+
+    - once successfully verified, 
+      - create new db entry with stake_key and discid
+
+    - on bid, find stake_key in db,
+      - post to blockfrost, check enough controlled stake
+
+
+
+
+
+
+
 - multiple bots managed by a single server
 - need to store multiple sets of credentials, one for each bots
   - each bot is specific to one guild

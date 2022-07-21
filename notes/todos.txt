@@ -41,6 +41,8 @@ DONE - Setup walkthrough process
 
 Testing:
 
+What if bot is restarting during a start/end event
+
 - randomly crashed during create, on logger step? create.js:71
  - weird
 
