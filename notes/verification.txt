@@ -1,0 +1,36 @@
+user hits /register
+
+bot generates user object in DB
+- creates and stores nonce against user
+ - userid
+   - nonce
+
+bot gathers userid, user avatar, user name
+bot generates JWT with userid encoded within payload
+
+bot generates url for frontend, query params for each of above
+
+user signs data
+ - gets sig, key
+
+frontend posts 
+ - sig
+ - key
+ - reward addr
+ - token(header)
+
+backend middleware validates jwt against pk(shared with bot)
+stores req.userid
+
+pulls user nonce from db, runs sig check
+ - passes key, sig, nonce
+
+if sig check passes
+- create bech32 addy from reward_addr
+- update user(should already exist since bot created it with nonce)
+  - userid = userid
+    - stake_addr
+  
+
+
+
