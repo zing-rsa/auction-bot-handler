@@ -3,7 +3,6 @@
 - create second bot app
 - store creds in db and try run both at same time.
 
-
 TODO: 
 
 - Handle missing permissions elegantly?
@@ -11,6 +10,16 @@ TODO:
     - does entire server crash? ie. require restart ?
     - does it just fail and carry on ?
 
+- defer replies on all commands? 
+
+- listen for old !bid and !create
+
+- don't send fucked dates
+
+- email noties when it goes down?
+ - or when auction ends
+
+- dont' ship with hardcoded times
 
 DONE - /bid
 
@@ -25,15 +34,6 @@ DONE - image-url
 DONE - remove ping
 
 DONE - deploy and test on server
-
-- listen for old !bid and !create
-
-- don't send fucked dates
-
-- email noties when it goes down?
- - or when auction ends
-
-- dont' ship with hardcoded times
 
 DONE - Setup walkthrough process
   DONE - keep in mind that deploy-commands needs to be run
