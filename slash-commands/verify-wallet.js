@@ -12,25 +12,12 @@ module.exports = {
         .setDescription('Verify a wallet against your discord user'),
     async execute(interaction) {
 
+        console.log('/verify-wallet');
+        await interaction.deferReply({ ephemeral: true });
+
         try {
 
-            // try { // validation
-
-            // 	if (!interaction.client.auctionIds.includes(interaction.channelId))
-            // 		throw new ValidationError("Can't do that here");
-
-
-
-            // 	} catch (e) {
-            // 		if (e instanceof ValidationError)
-            // 			return await interaction.reply({ content: e.message, ephemeral: true });
-            // 		else 
-            // 			throw(e)
-            // 	}
-
-            console.log('/verify-wallet');
-
-            await interaction.deferReply({ ephemeral: true });
+            // validation? 
 
             const nonce = generateNonce(16);
             const userid = interaction.user.id;
@@ -61,8 +48,12 @@ module.exports = {
             await interaction.editReply({ embeds: [urlEmbed], ephemeral: true });
 
         } catch (e) {
-            console.error('Failed to process price check. Error:', e);
-            await interaction.editReply({ content: "Sorry, I couldn't run that command", ephemeral: true });
+            if (e instanceof ValidationError){
+                return await interaction.reply({ content: e.message, ephemeral: true });
+            } else {
+                console.error('Failure during verify wallet. Error:', e);
+                await interaction.editReply({ content: "Sorry, I couldn't run that command", ephemeral: true });
+            }
         }
     },
 };

@@ -3,4 +3,6 @@
 /.vscode
 test.js
 
+/data
+
 **.png

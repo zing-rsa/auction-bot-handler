@@ -17,11 +17,9 @@ module.exports = {
 	async execute(interaction) {
 
 		console.log('/bid')
-
 		await interaction.deferReply({ ephemeral: true });
 
 		lock.acquire("", async (done) => {
-			console.log('lock acquired');
 
 			try {
 
@@ -123,8 +121,6 @@ module.exports = {
 				done();
 			}
 
-		}, () => {
-			console.log('lock released')
-		});
+		}, () => {});
 	},
 };

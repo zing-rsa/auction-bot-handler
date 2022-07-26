@@ -12,25 +12,19 @@ module.exports = {
         .addStringOption(option =>
             option.setName('auction-id').setDescription('The ID of the auction(same as channelID)').setRequired(true)),
     async execute(interaction) {
+
+        console.log('/end');
+
         try {
-            try {
-                id = interaction.options.get('auction-id').value;
-                auction = await db.collection(AUCTION_COL_NAME).findOne({ _id: id });
 
-                if (interaction.channelId != interaction.client.config.comm_channel)
-                    throw new ValidationError("Can't do that here");
+            id = interaction.options.get('auction-id').value;
+            auction = await db.collection(AUCTION_COL_NAME).findOne({ _id: id });
 
-                if (!auction)
-                    throw new ValidationError("Can't find that auction");
+            if (interaction.channelId != interaction.client.config.comm_channel)
+                throw new ValidationError("Can't do that here");
 
-            } catch (e) {
-                if (e instanceof ValidationError)
-                    return await interaction.reply({ content: e.message, ephemeral: true });
-                else
-                    throw(e)
-            }
-
-            console.log('/end');
+            if (!auction)
+                throw new ValidationError("Can't find that auction");
 
             clear_timers(auction._id);
 
@@ -39,8 +33,12 @@ module.exports = {
             return await interaction.reply('Auction ended');
 
         } catch (e) {
-            console.error(e);
-            return await interaction.reply("Sorry, I couldn't execute that command");
+            if (e instanceof ValidationError) {
+                return await interaction.reply({ content: e.message, ephemeral: true });
+            } else {
+                console.error(e);
+                return await interaction.reply("Sorry, I couldn't execute that command");
+            }
         }
     },
 };

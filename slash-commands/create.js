@@ -25,9 +25,10 @@ module.exports = {
 			option.setName('image-url').setDescription('Image to display on the auction (Optional)').setRequired(false)),
 
 	async execute(interaction) {
-		try {
-			try { // validation
 
+		await interaction.deferReply();
+
+		try {
 				auc_name = interaction.options.getString('name');
 				existing_channel = interaction.guild.channels.cache.find(channel => channel.name == auc_name);
 				auction_cat = interaction.guild.channels.cache.get(interaction.client.config.auction_cat);
@@ -61,12 +62,6 @@ module.exports = {
 				if (!auction_cat)
 					throw new ValidationError("Can't find the auctions category");
 
-			} catch (e) {
-				if (e instanceof ValidationError)
-					return await interaction.reply({ content: e.message, ephemeral: true });
-				else
-					throw (e)
-			}
 
 			console.log('/create');
 
@@ -127,11 +122,15 @@ module.exports = {
 
 			await auction_channel.send({ embeds: [auctionEmbed] });
 
-			return await interaction.reply('Auction created');
+			return await interaction.editReply('Auction created');
 
 		} catch (e) {
-			console.error(e);
-			return await interaction.reply('Failed to execute this command');
+			if (e instanceof ValidationError){
+				return await interaction.editReply({ content: e.message, ephemeral: true });
+			} else {
+				console.error(e);
+				return await interaction.editReply('Failed to execute this command');
+			}
 		}
 	},
 };
