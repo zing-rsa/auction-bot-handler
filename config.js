@@ -9,6 +9,9 @@ module.exports = {
 
     FRONTEND_URL: 'http://localhost:3000',
 
+    BLOCKFROST_PROJECTID: process.env.BLOCKFROST_PROJECTID,
+    BLOCKFROST_URI: 'https://cardano-mainnet.blockfrost.io/api/v0/',
+
     HEROKU_RESTART_MAX: 100800000
 
 }

@@ -41,6 +41,9 @@ DONE - Setup walkthrough process
 
 Testing:
 
+- case where user dismisses defered reply before response
+  - bot abandons reply
+
 What if bot is restarting during a start/end event
 
 - randomly crashed during create, on logger step? create.js:71

@@ -119,7 +119,7 @@ module.exports = {
 					{ name: 'Start time (UTC)', value: toCustomStringDate(new Date(auction.start)), inline: true },
 					{ name: 'End time (UTC)', value: toCustomStringDate(new Date(auction.end)), inline: true },
 					{ name: '\u200B', value: '\u200B', inline: false },
-					{ name: 'How to participate:', value: '/bid <price>', inline: false },
+					{ name: 'How to participate:', value: '/bid', inline: false },
 				)
 				.setImage(auction.url)
 				.setTimestamp()

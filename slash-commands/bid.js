@@ -1,11 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const db = require('../mongo').db()
-const { AUCTION_COL_NAME } = require('../config')
-const { clear_timers, handle_timer_setup } = require('../timers');
 const { MessageEmbed } = require('discord.js');
-const { toCustomStringDate } = require('../util')
-const { ValidationError } = require('../errors')
 
+const { getStakeInfo } = require('../services/blockfrost.service');
+const { clear_timers, handle_timer_setup } = require('../timers');
+const { AUCTION_COL_NAME, USER_COL_NAME } = require('../config');
+const { toCustomStringDate } = require('../util');
+const { ValidationError } = require('../errors');
+const db = require('../mongo').db();
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,11 +16,15 @@ module.exports = {
 	async execute(interaction) {
 
 		try {
-			try { // validation
 
-				auction = interaction.client.auctions.find(auc => auc._id == interaction.channelId);
-				price = interaction.options.get('price').value;
-				now = Date.now();
+			await interaction.deferReply({ephemeral: true});
+
+			let auction = interaction.client.auctions.find(auc => auc._id == interaction.channelId);
+			let price = interaction.options.get('price').value;
+			let now = Date.now();
+			let balance;
+
+			try { // validation
 
 				if (!interaction.client.auctionIds.includes(interaction.channelId))
 					throw new ValidationError("Can't do that here");
@@ -34,9 +39,26 @@ module.exports = {
 						throw new ValidationError(`Min bid is ${auction.highBid + auction.increment}`);
 				}
 
+				let user = await db.collection(USER_COL_NAME).findOne({ userid: interaction.user.id });
+
+				if (!user)
+					throw new ValidationError("You must register a wallet to partake in this auction, please run /verify-wallet");
+
+				if (!user.stake_key)
+					throw new ValidationError("I couldn't find your wallet info, please run /verify-wallet");
+
+				try {
+					balance = await getStakeInfo(user.stake_key);
+				} catch (e) {
+					throw new ValidationError('I could not obtain your wallet info from blockfrost');
+				}
+
+				if (balance < price) 
+					throw new ValidationError('It appears your wallet does not contain enough ADA to place this bid');
+
 			} catch (e) {
 				if (e instanceof ValidationError)
-					return await interaction.reply({ content: e.message, ephemeral: true });
+					return await interaction.editReply({ content: e.message, ephemeral: true });
 				else
 					throw (e);
 			}
@@ -83,7 +105,10 @@ module.exports = {
 				)
 				.setTimestamp();
 
-			await interaction.reply({ embeds: [bidEmbed] });
+			interaction.editReply("Bid processed.").catch(() => {});
+			// await interaction.editReply("Bid processed.");
+
+			await interaction.channel.send({ embeds: [bidEmbed] });
 
 			if (prevHighBidId && prevHighBidId != 'none')
 				await interaction.channel.send(`<@${prevHighBidId}> you have been outbid!`);
@@ -93,7 +118,7 @@ module.exports = {
 
 		} catch (e) {
 			console.error('Failed to process bid. Error:', e);
-			await interaction.reply({ content: "Sorry, I couldn't process this bid", ephemeral: true });
+			await interaction.editReply({ content: "Sorry, I couldn't process this bid", ephemeral: true });
 		}
 	},
 };

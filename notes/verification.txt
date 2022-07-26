@@ -1,29 +1,33 @@
 user hits /register
 
+WIP: Validation on /bid
+WIP: write backend wallet verification code
 
-TODO: bot generates user object in DB
-TODO: - creates and stores nonce against user
-TODO:  - userid
-TODO:    - nonce
-TODO: 
-TODO: bot gathers userid, user avatar, user name
-TODO: bot generates JWT with userid encoded within payload
-TODO: 
-TODO: bot generates url for frontend, query params for each of above
-TODO: 
-TODO: user signs data
-TODO:  - gets sig, key
+TODO: React follow best practices
+TODO: Clean frontend UI
+TODO: Validation on /register?
+TODO: Defer reply on long running commands (bid? create? end?)
+TODO: Try{} on bot code
+TODO: Does the bot need to post a token for the balance check? 
 
+DONE: bot generates user object in DB
+DONE: - creates and stores nonce against user
+DONE:  - userid
+DONE:    - nonce
+DONE: 
+DONE: bot gathers userid, user avatar, user name
+DONE: bot generates JWT with userid encoded within payload
+DONE: 
+DONE: bot generates url for frontend, query params for each of above
+DONE: 
+DONE: user signs data
+DONE:  - gets sig, key
 
-
-WIP: frontend posts 
-WIP:  - sig
-WIP:  - key
-WIP:  - reward addr
-WIP:  - token(header)
-
-
-
+DONE: frontend posts 
+DONE:  - sig
+DONE:  - key
+DONE:  - reward addr
+DONE:  - token(header)
 
 DONE - backend middleware validates jwt against pk(shared with bot)
 DONE - stores req.userid

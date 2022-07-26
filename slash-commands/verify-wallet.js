@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { ValidationError } = require('../errors');
-const { generateNonce } = require('../entropy');
-const { generateJWT } = require('../tokens');
+
 const { USER_COL_NAME, FRONTEND_URL } = require('../config');
+const { generateJWT, generateNonce } = require('../util');
+const { ValidationError } = require('../errors');
 const db = require('../mongo').db();
 
 module.exports = {
