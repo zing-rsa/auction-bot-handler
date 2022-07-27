@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 
 const { USER_COL_NAME, FRONTEND_URI } = require('../config');
 const { generateJWT, generateNonce } = require('../util');
@@ -16,8 +16,17 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
 
         try {
+            let description = ''
 
-            // validation? 
+            let user = await db.collection(USER_COL_NAME).findOne({userid: interaction.user.id});
+
+            if (user && user.stake_key) {
+                description = `I checked my records and I already have you in my database. The details I found are:\n 
+**stake_key: ${user.stake_key}**\n
+If this is correct you can continue on to bidding. If you'd like to change, please feel free to re-verify below.`
+            } else {
+                description = `Please click the button below to verify your wallet.`
+            }
 
             const nonce = generateNonce(16);
             const userid = interaction.user.id;
@@ -42,16 +51,23 @@ module.exports = {
 
             const urlEmbed = new MessageEmbed()
                 .setColor('0x00a113')
-                .setTitle(`Please visit this link to verify!`)
-                .setDescription(`Description`)
-                .setURL(url)
+                .setTitle(`Welcome to wallet verification!`)
+                .setDescription(description)
                 .setTimestamp();
 
-            await interaction.editReply({ embeds: [urlEmbed], ephemeral: true });
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setLabel('Verify wallet')
+                        .setURL(url)
+                        .setStyle('LINK')
+                );
+
+            await interaction.editReply({ embeds: [urlEmbed], components: [row] });
 
         } catch (e) {
-            if (e instanceof ValidationError){
-                return await interaction.reply({ content: e.message, ephemeral: true });
+            if (e instanceof ValidationError) {
+                return await interaction.editReply({ content: e.message, ephemeral: true });
             } else {
                 console.error('Failure during verify wallet. Error:', e);
                 await interaction.editReply({ content: "Sorry, I couldn't run that command", ephemeral: true });

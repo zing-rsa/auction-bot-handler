@@ -5,21 +5,9 @@
 
 TODO: 
 
-- Handle missing permissions elegantly?
- - if bot can't access the channels it needs to, what happens ? 
-    - does entire server crash? ie. require restart ?
-    - does it just fail and carry on ?
-
-- defer replies on all commands? 
-
-- listen for old !bid and !create
-
-- don't send fucked dates
-
-- email noties when it goes down?
- - or when auction ends
-
-- dont' ship with hardcoded times
+TODO: Payment address to be included
+TODO: https link to NFT
+TODO: Description field
 
 DONE - /bid
 
@@ -38,6 +26,21 @@ DONE - deploy and test on server
 DONE - Setup walkthrough process
   DONE - keep in mind that deploy-commands needs to be run
 
+- Handle missing permissions elegantly?
+ - if bot can't access the channels it needs to, what happens ? 
+    - does entire server crash? ie. require restart ?
+    - does it just fail and carry on ?
+
+- defer replies on all commands? 
+
+- listen for old !bid and !create
+
+- don't send fucked dates
+
+- email noties when it goes down?
+ - or when auction ends
+
+- dont' ship with hardcoded times
 
 Testing:
 
