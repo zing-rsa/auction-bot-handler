@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 
-const { USER_COL_NAME, FRONTEND_URL } = require('../config');
+const { USER_COL_NAME, FRONTEND_URI } = require('../config');
 const { generateJWT, generateNonce } = require('../util');
 const { ValidationError } = require('../errors');
 const db = require('../mongo').db();
@@ -24,6 +24,8 @@ module.exports = {
             const name = interaction.user.username;
             const token = generateJWT(userid);
             const avatarId = interaction.user.avatar;
+            const bot_avatarid = interaction.client.user.avatar
+            const bot_id = interaction.client.application.id
 
             await db.collection(USER_COL_NAME).updateOne(
                 { userid: interaction.user.id },
@@ -36,7 +38,7 @@ module.exports = {
                 { upsert: true }
             );
 
-            const url = FRONTEND_URL + `?data=${nonce}&userid=${userid}&username=${name}&auth=${token}&avatar=${avatarId}`
+            const url = FRONTEND_URI + `?data=${nonce}&userid=${userid}&username=${name}&auth=${token}&avatar=${avatarId}&bavatar=${bot_avatarid}&buser=${bot_id}`
 
             const urlEmbed = new MessageEmbed()
                 .setColor('0x00a113')

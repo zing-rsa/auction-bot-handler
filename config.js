@@ -7,7 +7,7 @@ module.exports = {
 
     JWT_SECRET: process.env.JWT_SECRET,
 
-    FRONTEND_URL: 'http://localhost:3000',
+    FRONTEND_URI: process.env.FRONTEND_URI,
 
     BLOCKFROST_PROJECTID: process.env.BLOCKFROST_PROJECTID,
     BLOCKFROST_URI: 'https://cardano-mainnet.blockfrost.io/api/v0/',
