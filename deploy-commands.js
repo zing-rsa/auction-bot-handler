@@ -21,7 +21,7 @@ const { BOT_COL_NAME } = require('./config');
 	let bots = db.collection(BOT_COL_NAME);
 	let botsArr = await bots.find({}).toArray();
 
-	console.log(botsArr);
+	console.log('Found bots:', botsArr);
 
 	for (let i = 0; i < botsArr.length; i++) {
 
@@ -41,7 +41,7 @@ const { BOT_COL_NAME } = require('./config');
 			await rest.put(Routes.applicationGuildCommands(botsArr[i]._id, botsArr[i].guild), { body: commands });
 			console.log('Successfully registered application commands for client: ', botsArr[i]._id);
 		} catch (e){
-			console.log(e);
+			console.error(e);
 		}
 	}
 

@@ -13,7 +13,7 @@ module.exports = {
             option.setName('auction-id').setDescription('The ID of the auction(same as channelID)').setRequired(true)),
     async execute(interaction) {
 
-        console.log('/end');
+        console.log(interaction.client.application.id + ': /end');
 
         try {
 

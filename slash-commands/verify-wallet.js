@@ -12,7 +12,8 @@ module.exports = {
         .setDescription('Verify a wallet against your discord user'),
     async execute(interaction) {
 
-        console.log('/verify-wallet');
+        console.log(interaction.client.application.id + ': /verify-wallet');
+        
         await interaction.deferReply({ ephemeral: true });
 
         try {

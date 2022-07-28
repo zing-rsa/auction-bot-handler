@@ -25,7 +25,7 @@ const refresh_bot_commands = async (bot) => {
         await rest.put(Routes.applicationGuildCommands(bot._id, bot.guild), { body: commands })
         console.log(`Successfully registered application commands for client: ${bot._id} in server: ${bot.guild}`)
     } catch (e) {
-        console.log(e);
+        console.error('Error during command registration in new server:', e);
     }
 }
 

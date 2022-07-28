@@ -9,7 +9,8 @@ module.exports = {
 		.setDescription('Shows the current price of an auction'),
 	async execute(interaction) {
 
-		console.log('/price')
+		console.log(interaction.client.application.id + ': /price')
+		
 		await interaction.deferReply();
 
 		lock.acquire("", async (done) => {

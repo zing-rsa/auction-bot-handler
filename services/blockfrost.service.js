@@ -14,7 +14,7 @@ const getStakeInfo = async (stake_key) => {
     
         return result.data.controlled_amount/1000000;
     } catch (e) {
-        console.error(e);
+        console.error('ERROR: Unable to obtain information for wallet: ' + stake_key);
         throw new Error('Could not find wallet information on blockfrost');
     }
 }

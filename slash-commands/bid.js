@@ -16,7 +16,8 @@ module.exports = {
 		.addIntegerOption(option => option.setName('price').setDescription('Price of bid').setRequired(true)),
 	async execute(interaction) {
 
-		console.log('/bid')
+		console.log(interaction.client.application.id + ': /bid')
+		
 		await interaction.deferReply({ ephemeral: true });
 
 		lock.acquire("", async (done) => {

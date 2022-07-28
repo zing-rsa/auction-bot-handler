@@ -32,6 +32,8 @@ module.exports = {
 
 	async execute(interaction) {
 
+		console.log(interaction.client.application.id + ': /create');
+
 		await interaction.deferReply();
 
 		try {
@@ -73,9 +75,6 @@ module.exports = {
 			if (!auction_cat)
 				throw new ValidationError("Can't find the auctions category");
 
-
-			console.log('/create');
-
 			auction_channel = await interaction.guild.channels.create(auc_name, {
 				type: 'GuildText'
 			});
@@ -110,7 +109,7 @@ module.exports = {
 			interaction.client.auctions.push(auction);
 			interaction.client.auctionIds.push(auction._id);
 
-			console.log('created auction for', auc_name);
+			console.log(interaction.client.application.id + ': created auction for ' + auc_name);
 
 			handle_timer_setup(auction, interaction.client);
 
