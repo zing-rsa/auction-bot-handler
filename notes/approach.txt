@@ -18,12 +18,6 @@ wallet verify:
     - on bid, find stake_key in db,
       - post to blockfrost, check enough controlled stake
 
-
-
-
-
-
-
 - multiple bots managed by a single server
 - need to store multiple sets of credentials, one for each bots
   - each bot is specific to one guild

@@ -5,26 +5,22 @@
 
 TODO: 
 
-TODO: Payment address to be included
-TODO: https link to NFT
-TODO: Description field
+DONE: Payment address to be included
+DONE: https link to NFT
+DONE: Description field
+
+Handle case where bot is restarting during a start/end event
 
 DONE - /bid
-
 DONE - /price
-
 DONE - bid extend function
-
 DONE - embeds 
-
 DONE - image-url
-
 DONE - remove ping
-
 DONE - deploy and test on server
 
 DONE - Setup walkthrough process
-  DONE - keep in mind that deploy-commands needs to be run
+DONE   - keep in mind that deploy-commands needs to be run
 
 - Handle missing permissions elegantly?
  - if bot can't access the channels it needs to, what happens ? 
@@ -44,10 +40,9 @@ DONE - Setup walkthrough process
 
 Testing:
 
-- case where user dismisses defered reply before response
-  - bot abandons reply
+NONISSUE - case where user dismisses defered reply before response
+NONISSUE   - bot abandons reply
 
-What if bot is restarting during a start/end event
 
 - randomly crashed during create, on logger step? create.js:71
  - weird

@@ -1,14 +1,15 @@
 user hits /register
 
-WIP: Validation on /bid
-WIP: write backend wallet verification code
-
 TODO: React follow best practices
-TODO: Clean frontend UI
-TODO: Validation on /register?
-TODO: Defer reply on long running commands (bid? create? end?)
 TODO: Try{} on bot code
-TODO: Does the bot need to post a token for the balance check? 
+
+DONE: Validation on /bid
+DONE: write backend wallet verification code
+
+DONE: Clean frontend UI
+DONE: Validation on /register?
+DONE: Defer reply on long running commands (bid? create? end?)
+DONE: Does the bot need to post a token for the balance check? 
 
 DONE: bot generates user object in DB
 DONE: - creates and stores nonce against user
