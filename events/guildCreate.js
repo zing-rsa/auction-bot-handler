@@ -31,7 +31,6 @@ const refresh_bot_commands = async (bot) => {
 
 module.exports = {
     name: 'guildCreate',
-    once: true,
     async execute(guild) {
 
         try {
@@ -210,7 +209,7 @@ Please try again.`          )
 
         } catch (e) {
 
-            if (e instanceof DiscordAPIError){
+            if (e.name === 'DiscordAPIError'){
                 console.error('Caught DiscordAPIError:', e);
             } else {
                 console.error('Setup process failed: ', e);
