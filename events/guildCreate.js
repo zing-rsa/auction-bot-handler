@@ -3,7 +3,7 @@ const { BOT_COL_NAME } = require('../config')
 const path = require('node:path');
 const fs = require('node:fs');
 
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, DiscordAPIError } = require('discord.js');
 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
@@ -209,10 +209,16 @@ Please try again.`          )
             console.log(`Updated db entry for bot:`, clientId)
 
         } catch (e) {
-            console.error('Setup process failed: ', e);
-            if (dmChannel) {
-                await dmChannel.send('Unfortunately it seems like my setup failed. Please contact zing#0908 for assistance');
+
+            if (e instanceof DiscordAPIError){
+                console.error('Caught DiscordAPIError:', e);
+            } else {
+                console.error('Setup process failed: ', e);
+                if (dmChannel) {
+                    await dmChannel.send('Unfortunately it seems like my setup failed. Please contact zing#0908 for assistance');
+                }
             }
+
         }
     },
 };

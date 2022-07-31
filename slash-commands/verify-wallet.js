@@ -34,8 +34,8 @@ If this is correct you can continue on to bidding. If you'd like to change, plea
             const name = interaction.user.username;
             const token = generateJWT(userid);
             const avatarId = interaction.user.avatar;
-            const bot_avatarid = interaction.client.user.avatar
-            const bot_id = interaction.client.application.id
+            const bot_avatarid = interaction.client.user.avatar;
+            const bot_id = interaction.client.application.id;
 
             await db.collection(USER_COL_NAME).updateOne(
                 { userid: interaction.user.id },
