@@ -5,11 +5,17 @@
 
 TODO: 
 
+
+Handle case where bot is restarting during a start/end event
+
+Fix crash on failed DM
+- fixed crash, but now guildCreate doesn't fire on second bot add
+
+Test cases 
+
 DONE: Payment address to be included
 DONE: https link to NFT
 DONE: Description field
-
-Handle case where bot is restarting during a start/end event
 
 DONE - /bid
 DONE - /price

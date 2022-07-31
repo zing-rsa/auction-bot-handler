@@ -8,15 +8,12 @@ const handle_timer_setup = (auction, client) => {
 
     const start_diff = auction.start - Date.now();
     const end_diff = auction.end - Date.now();
+    
+    if (auction.active === false && start_diff < HEROKU_RESTART_MAX)
+        start_timers[auction._id] = setTimeout(() => handle_auction_start(auction, client), Math.max(start_diff, 10));
 
-    // does not cater for the bot being down during the start or end of auctions
-    // can't remove isFuture check because that would result in duplicate 'start' calls for active auctions
-
-    if (start_diff > 0 && start_diff < HEROKU_RESTART_MAX)
-        start_timers[auction._id] = setTimeout(() => handle_auction_start(auction, client), start_diff);
-
-    if (end_diff > 0 && end_diff < HEROKU_RESTART_MAX)
-        end_timers[auction._id] = setTimeout(() => handle_auction_end(auction, client), end_diff);
+    if (end_diff < HEROKU_RESTART_MAX)
+        end_timers[auction._id] = setTimeout(() => handle_auction_end(auction, client), Math.max(end_diff, 500));
 }
 
 const clear_timers = (timerId = null) => {

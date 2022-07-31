@@ -72,13 +72,13 @@ let clients = {};
 			}
 		}
 
+		console.log('Logging in client: ', botsArr[i]._id);
+
+		await clients[botsArr[i]._id].login(botsArr[i].token);
+
 		for (let j = 0; j < clients[botsArr[i]._id].auctions.length; j++) {
 			handle_timer_setup(clients[botsArr[i]._id].auctions[j], clients[botsArr[i]._id]);
 		}
-
-		console.log('Logging in client: ', botsArr[i]._id);
-
-		clients[botsArr[i]._id].login(botsArr[i].token);
 
 	}
 
