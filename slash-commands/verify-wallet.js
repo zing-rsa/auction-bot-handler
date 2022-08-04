@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 
-const { USER_COL_NAME, FRONTEND_URI } = require('../config');
+const { USER_COL_NAME } = require('../config');
 const { generateJWT, generateNonce } = require('../util');
 const { ValidationError } = require('../errors');
 const db = require('../mongo').db();
@@ -48,7 +48,7 @@ If this is correct you can continue on to bidding. If you'd like to change, plea
                 { upsert: true }
             );
 
-            const url = interaction.client.config.custom_domain + `?data=${nonce}&userid=${userid}&username=${name}&auth=${token}&avatar=${avatarId}&bavatar=${bot_avatarid}&buser=${bot_id}`
+            const url = interaction.client.config.uri + `?data=${nonce}&userid=${userid}&username=${name}&auth=${token}&avatar=${avatarId}&bavatar=${bot_avatarid}&buser=${bot_id}`
 
             const urlEmbed = new MessageEmbed()
                 .setColor('0x00a113')
