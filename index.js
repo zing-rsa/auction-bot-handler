@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { BOT_COL_NAME, AUCTION_COL_NAME } = require('./config');
+const { BOT_COL_NAME, AUCTION_COL_NAME, FRONTEND_URI } = require('./config');
 
 
 const { Client, Intents, Collection } = require('discord.js');
@@ -38,7 +38,8 @@ let clients = {};
 		clients[botsArr[i]._id].config = {
 			auction_cat: botsArr[i].auction_cat,
 			tx_channel: botsArr[i].tx_channel,
-			comm_channel: botsArr[i].comm_channel
+			comm_channel: botsArr[i].comm_channel,
+			custom_domain: botsArr[i].custom_domain || FRONTEND_URI
 		};
 
 		clients[botsArr[i]._id].auctions = auctionsArr.filter((auction) => auction.client_owner == botsArr[i]._id);

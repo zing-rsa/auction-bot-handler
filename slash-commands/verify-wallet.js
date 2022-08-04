@@ -48,7 +48,7 @@ If this is correct you can continue on to bidding. If you'd like to change, plea
                 { upsert: true }
             );
 
-            const url = FRONTEND_URI + `?data=${nonce}&userid=${userid}&username=${name}&auth=${token}&avatar=${avatarId}&bavatar=${bot_avatarid}&buser=${bot_id}`
+            const url = interaction.client.config.custom_domain + `?data=${nonce}&userid=${userid}&username=${name}&auth=${token}&avatar=${avatarId}&bavatar=${bot_avatarid}&buser=${bot_id}`
 
             const urlEmbed = new MessageEmbed()
                 .setColor('0x00a113')
