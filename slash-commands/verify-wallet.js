@@ -31,7 +31,7 @@ If this is correct you can continue on to bidding. If you'd like to change, plea
 
             const nonce = generateNonce(16);
             const userid = interaction.user.id;
-            const name = interaction.user.username;
+            const name = encodeURIComponent(interaction.user.username);
             const token = generateJWT(userid);
             const avatarId = interaction.user.avatar;
             const bot_avatarid = interaction.client.user.avatar;
