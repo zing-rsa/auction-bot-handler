@@ -13,6 +13,8 @@ const handle_auction_start = async (auction, client) => {
                 'active': true
             }
         });
+        
+    auction.active = true;
 
     channel = client.guilds.cache.get(auction.guild).channels.cache.get(auction._id);
 
