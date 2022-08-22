@@ -5,11 +5,12 @@
 
 TODO: 
 
+Flint verification does not work
 
-Handle case where bot is restarting during a start/end event
+DONE: Handle case where bot is restarting during a start/end event
 
-Fix crash on failed DM
-- fixed crash, but now guildCreate doesn't fire on second bot add
+DONE: Fix crash on failed DM
+    FIXED - fixed crash, but now guildCreate doesn't fire on second bot add
 
 Test cases 
 
@@ -53,14 +54,11 @@ NONISSUE   - bot abandons reply
 - randomly crashed during create, on logger step? create.js:71
  - weird
 
-suspiscion:
-
 - if one thing is awaiting, when another occurs in the background, 
 - it means that the vars like client/interaction get overwritten, 
 - once the await resolves, the vars are now different
 - start setup in one channel, breakpoint after awaitMessage
 - start auction in another channel, continue setup, check breakpoint vars
-
 -- NOT THE CASE
 
 - does a user setting up a bot block other auctions? 
