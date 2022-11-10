@@ -4,6 +4,7 @@ const { MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const { USER_COL_NAME } = require('../config');
 const { generateJWT, generateNonce } = require('../util');
 const { ValidationError } = require('../errors');
+const { isInteractionButton } = require('discord-api-types/utils/v9');
 const db = require('../mongo').db();
 
 module.exports = {
@@ -24,15 +25,22 @@ module.exports = {
             if (user && user.stake_key) {
                 description = `I checked my records and I already have you in my database. The details I found are:\n 
 **stake_key: ${user.stake_key}**\n
-If this is correct you can continue on to bidding. If you'd like to change, please feel free to re-verify below.`
+If this is correct you are already verified. If you'd like to change your wallet, please feel free to re-verify below.`
             } else {
                 description = `Please click the button below to verify your wallet.`
+            }
+
+            const tokenData = {
+                userId: userid,
+                guildId: interaction.guildId,
+                details: interaction.client.config.functionality.commands.find(c => c.name == 'verify-wallet')?.details 
+                || null
             }
 
             const nonce = generateNonce(16);
             const userid = interaction.user.id;
             const name = encodeURIComponent(interaction.user.username);
-            const token = generateJWT(userid);
+            const token = generateJWT(tokenData);
             const avatarId = interaction.user.avatar;
             const bot_avatarid = interaction.client.user.avatar;
             const bot_id = interaction.client.application.id;
@@ -70,7 +78,7 @@ If this is correct you can continue on to bidding. If you'd like to change, plea
             if (e instanceof ValidationError) {
                 return await interaction.editReply({ content: e.message, ephemeral: true });
             } else {
-                console.error('Failure during verify wallet. Error:', e);
+                console.error('Failure during wallet verification. Error:', e);
                 await interaction.editReply({ content: "Sorry, I couldn't run that command", ephemeral: true });
             }
         }

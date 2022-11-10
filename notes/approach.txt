@@ -1,3 +1,74 @@
+Holder verify:
+
+Sign tx
+Gets stake key
+check account associated addresses
+loop addresses
+ do - call address assets
+    - add to list
+ while - address assets == 100
+
+ check all assets:
+ loop:
+ if policy == moon policy 
+    verified
+
+
+
+blockfrost has assets associated with account address
+
+do 
+ call assets
+ if assets contains moon policy
+ return true
+while assets == 100
+
+
+
+
+moon policy: e5a2bcc51466942a9db1da62471a1b682bde3abcebafee2c7fb1e378
+
+
+
+Individual bot functionality:
+
+bot details
+- commands: 
+ - holder-verify
+  - alias
+  - setup requirements
+  - 
+  - details (dynamic object used in)
+   - policy
+
+
+adds functionality object to config json (eg):
+
+    "functionality": {
+        "commands": [
+            {
+                "name": "verify-wallet",
+                "details": {
+                    "additionalChecks": [
+                        {
+                            "holdsPolicy": "e5a2bcc51466942a9db1da62471a1b682bde3abcebafee2c7fb1e378"
+                        }
+                    ],
+                    "additionalActions": [
+                        {
+                            "assignRole": "holder" 
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+
+
+
+
+
+
 wallet verify:
  - verfiy.js 
     - setInverval that runs for each key in 'verifying' map

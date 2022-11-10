@@ -39,7 +39,8 @@ let clients = {};
 			auction_cat: botsArr[i].auction_cat,
 			tx_channel: botsArr[i].tx_channel,
 			comm_channel: botsArr[i].comm_channel,
-			uri: botsArr[i].custom_domain || FRONTEND_URI
+			uri: botsArr[i].custom_domain || FRONTEND_URI,
+			functionality: botsArr[i].functionality
 		};
 
 		clients[botsArr[i]._id].auctions = auctionsArr.filter((auction) => auction.client_owner == botsArr[i]._id);

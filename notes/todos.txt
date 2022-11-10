@@ -5,19 +5,41 @@
 
 TODO: 
 
+holder verification:
+TODO: remove all refs to auctions 
+TODO: move strings to some store of the strings.js
+TODO: only register commands that are in the functionality list
+TODO: 
+TODO: 
+TODO: 
+TODO: 
+
+
+
+
 Flint verification does not work
-
-DONE: Handle case where bot is restarting during a start/end event
-
-DONE: Fix crash on failed DM
-    FIXED - fixed crash, but now guildCreate doesn't fire on second bot add
-
 Test cases 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DONE: Handle case where bot is restarting during a start/end event
+DONE: Fix crash on failed DM
+    FIXED - fixed crash, but now guildCreate doesn't fire on second bot add
 DONE: Payment address to be included
 DONE: https link to NFT
 DONE: Description field
-
 DONE - /bid
 DONE - /price
 DONE - bid extend function
@@ -25,7 +47,6 @@ DONE - embeds
 DONE - image-url
 DONE - remove ping
 DONE - deploy and test on server
-
 DONE - Setup walkthrough process
 DONE   - keep in mind that deploy-commands needs to be run
 
