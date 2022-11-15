@@ -1,5 +1,5 @@
 const db = require('../mongo').db();
-const { BOT_COL_NAME } = require('../config')
+const { BOT_COL_NAME } = require('../config');
 const path = require('node:path');
 const fs = require('node:fs');
 
@@ -16,7 +16,10 @@ const refresh_bot_commands = async (bot) => {
     for (const file of commandFiles) {
         const filePath = path.join(commandsPath, file);
         const command = require(filePath);
-        commands.push(command.data.toJSON());
+
+        if (bot.functionality.commands.map(c => c.name).includes(command.data.name)) {
+            commands.push(command.data.toJSON());
+        }
     }
 
     const rest = new REST({ version: '9' }).setToken(bot.token);

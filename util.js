@@ -28,10 +28,10 @@ const generateNonce = (length) => {
     return Buffer.from(`${payload}`).toString('hex');
 }
 
-const generateJWT = (userid) => {
+const generateJWT = (data) => {
 
     const token = jwt.sign(
-        { userid: userid },
+        data,
         JWT_SECRET,
         {
             expiresIn: '30m',

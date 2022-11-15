@@ -30,20 +30,22 @@ If this is correct you are already verified. If you'd like to change your wallet
                 description = `Please click the button below to verify your wallet.`
             }
 
-            const tokenData = {
-                userId: userid,
-                guildId: interaction.guildId,
-                details: interaction.client.config.functionality.commands.find(c => c.name == 'verify-wallet')?.details 
-                || null
-            }
-
+            
             const nonce = generateNonce(16);
             const userid = interaction.user.id;
             const name = encodeURIComponent(interaction.user.username);
-            const token = generateJWT(tokenData);
             const avatarId = interaction.user.avatar;
             const bot_avatarid = interaction.client.user.avatar;
             const bot_id = interaction.client.application.id;
+            
+            const tokenData = {
+                u: userid,
+                g: interaction.guildId,
+                cid: interaction.client.config.functionality.commands.find(c => c.name == 'verify-wallet')?.details.configId
+                || null
+            }
+            
+            const token = generateJWT(tokenData);
 
             await db.collection(USER_COL_NAME).updateOne(
                 { userid: interaction.user.id },
